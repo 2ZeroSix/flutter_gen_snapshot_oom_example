@@ -9,8 +9,8 @@ void main(List<String> args) async {
 
   const usePartFile = true;
   const useTickerProviderMixin = true;
-  const generateMoreClasses = false;
-  const numberOfModules = 15;
+  const generateMoreClasses = true;
+  const numberOfModules = 20;
   const itemsInModule = 1000;
 
   final List<Module> modules = [
