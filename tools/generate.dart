@@ -7,7 +7,7 @@ void main(List<String> args) async {
   final dir = Directory.current;
   final rootPath = '${dir.path}/modules';
 
-  const usePartFile = true;
+  const usePartFile = false;
   const useTickerProviderMixin = true;
   const generateMoreClasses = true;
   const numberOfModules = 20;

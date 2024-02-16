@@ -53,9 +53,43 @@ class Module {
   Future<void> generate() async => Future.wait([
         generateYaml(),
         generateData(),
+        generateDataExport(),
         generateUi(),
+        generateUiExport(),
+        generateExport(),
         generateModuleEntry(),
       ]);
+
+  Future<void> generateDataExport() async {
+    if (usePartFile) return;
+    File export = File('$libPath/data/export.dart');
+    await export.create(recursive: true);
+    String exportContent = '';
+    for (final dataModel in dataModels) {
+      exportContent += 'export \'${dataModel.filename}\';\n';
+    }
+    await export.writeAsString(exportContent);
+  }
+
+  Future<void> generateUiExport() async {
+    File export = File('$libPath/ui/export.dart');
+    await export.create(recursive: true);
+    String exportContent = '';
+    for (final uiItem in uiItems) {
+      exportContent += 'export \'${uiItem.filename}\';\n';
+    }
+    await export.writeAsString(exportContent);
+  }
+
+  Future<void> generateExport() async {
+    File export = File('$libPath/export.dart');
+    await export.create(recursive: true);
+    await export.writeAsString('''
+export 'module${id}.dart';
+export 'ui/export.dart';
+export 'data/export.dart';
+''');
+  }
 
   Future<void> generateData() async {
     for (final dataModel in dataModels) {
@@ -97,11 +131,11 @@ dependencies:
     for (final uiItem in uiItems) {
       moduleUiElements += '${uiItem.uiElement},\n';
     }
-
+//${uiItems.map((item) => 'import \'ui/${item.filename}\';').join('\n')}
     return '''
 import 'package:flutter/widgets.dart';
+import 'export.dart';
 
-${uiItems.map((item) => 'import \'ui/${item.filename}\';').join('\n')}
 
 class Module${id}PageEntry extends StatefulWidget {
   const Module${id}PageEntry({super.key});

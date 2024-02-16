@@ -31,7 +31,7 @@ class UiItem {
     await uiFile.create(recursive: true);
     await uiFile.writeAsString('''
 import 'package:flutter/widgets.dart';
-${usePartFile ? 'part' : 'import'} '../data/data_module${moduleId}_model${model.id}.dart';
+${usePartFile ? 'part \'../data/data_module${moduleId}_model${model.id}.dart\';' : 'import \'../export.dart\';'}
 
 class Module${moduleId}UiItem$id extends StatefulWidget {
   const Module${moduleId}UiItem$id({super.key});
